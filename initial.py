@@ -1,4 +1,4 @@
-from rhymez import Rhymez
+import rimas as rimas
 
 class Verso:
     def __init__(self, body: str):
@@ -42,9 +42,17 @@ class Poema:
 
 
 def main():
-    with open('file') as f:
-        poema = Poema(f.read())
-        print(poema.estrofes[0].n_versos_label)
+    with open('poema1.txt') as f:
+        line = f.readline()
+        cenas = f.read()
+        contaestrofes=0
+        for values in cenas.split("\n\n"):
+            print(values)
+            print("-------------")
+            contaestrofes+=1
+        
+
+        rimas.rima("foder","perder")
 
 
 main()
