@@ -5,7 +5,6 @@ def rima(pal1,pal2):
     print("Palavra2: ",pal2,"Cumprimento palavra2: ",len(pal2))
     for c,d in zip(reversed(pal1),reversed(pal2)):
         if(c==d and flag == 1):
-            print(c,"e igual a ",d)
             conta+=1
         else:
             flag = 0
