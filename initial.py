@@ -111,7 +111,9 @@ def main():
         estrofes = poema.estrofes
         estrofes.pop()
         c = poema.estruturaFixa
-        print(c)
+        print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
+        
+        
        # nEstrofes = contaEstrofes(poema)
        # rimas.rima("foder","perder")
 

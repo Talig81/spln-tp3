@@ -12,5 +12,41 @@ def rima(pal1,pal2):
         print("nao rima")
     elif(conta >= 3):
         print("rima perfeita")
-        
-            
+
+
+def aliteracao(verso):
+    verseTreated = verseTreatment(str(verso))
+    for palavra in verseTreated:
+        if(isOneLetter(palavra) != True and isVogal(palavra[0])!= True):
+            if(isAliteracao(palavra,verseTreated) >= 3):
+                return "Verso tem aliteração na consoante: " + palavra[0]
+    return ("Não tem aliteração")
+
+def isAliteracao(palavra,verso):
+    auxLetter = palavra[0].lower()
+    conta = 0
+    for p in verso:
+        print("p: " , p)
+        if(p[0].lower() == auxLetter):
+            conta += 1
+    print("conta: ",conta)
+    return conta    
+
+
+def verseTreatment(verso):
+    verso = verso.strip(",")
+    return verso.split(" ")
+
+
+def isOneLetter(palavra):
+    if(len(palavra)==1):
+        return True
+    else:
+        return False
+
+def isVogal(letra):
+    lowered = letra.lower()
+    if lowered in "aeiou":
+        return True
+    else:
+        return False
