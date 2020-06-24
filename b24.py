@@ -35,17 +35,12 @@ class Estrofe:
             return 'nona'
         elif n_versos == 10:
             return 'decima'
-        elif False:
-            ...
         else:
             return 'irregular'
 
     @property
     def n_versos(self):
-        c = 0
-        for i in self.versos:
-            c+=1
-        return c
+        return len(list(self.versos))
 
     @property
     def versos(self):
@@ -58,43 +53,65 @@ class Poema:
         self.body = body
 
     @property
+    def n_estrofes(self):
+        return len(list(self.estrofes))
+
+    @property
     def estrofes(self):
         c = []
         for line in self.body.split('\n\n'):
             c.append(Estrofe(line.strip()))
-        return c
+        return c[1:-1]
+
     @property
     def estruturaFixa(self):
         c = []
         for estrofe in self.estrofes:
             c.append(estrofe.n_versos)
+
         c.pop()
-        if len(c) == 4:
+        if self.n_estrofes == 4:
             if(c[0] == 4 and c[1]==4 and c[2] == 3 and c[3]==3):
                 return "é um Soneto"
             elif (c[0] == 8 and c[1]==8 and c[2] == 8 and (c[3]==4 or c[3]==5)):
                 return "é uma Balada"
-            else:
-                return "não tem estrutura fixa"
-        elif len(c) == 7:
-            if(c[0] == 6 and c[1]== 6 and c[2] == 6 and c[3]== 6 and c[4] == 6 and c[5]==6 and c[6] == 3):
-                return "é uma Sextina"
-            else:
-                return "não tem estrutura fixa"
+
+        elif len(c) == 7 and (c[0] == 6 and c[1]== 6 and c[2] == 6 and c[3]== 6 and c[4] == 6 and c[5]==6 and c[6] == 3):
+            return "é uma Sextina"
+
         elif len(c)==3:
-                if(c[0] == 5 and c[1]== 3 and c[2] == 5):
-                    return "é um Rondó"
-                elif(c[0] == 4 and c[1]==4 and c[2] == 5):
-                    return "é um Rondel"
-                else:
-                    return "não tem estrutura fixa"
-        elif len(c)==1:
-            if(c[0]==3):
-                return "é um Haicai"
-            else:
-                return "não tem estrutura fixa"
-        else:
-            return "não tem estrutura fixa"
+            if(c[0] == 5 and c[1]== 3 and c[2] == 5):
+                return "é um Rondó"
+            elif(c[0] == 4 and c[1]==4 and c[2] == 5):
+                return "é um Rondel"
+
+        elif len(c)==1 and c[0] == 3:
+            return "é um Haicai"
+
+        return "não tem estrutura fixa"
+
+
+    @property
+    def estruturaFixa2(self):
+        resultados = {
+            "Soneto": (4, [4, 4, 3, 3]),
+            "Balada": (8, [8, 8, 4, 5]),
+            "Sextina": (7, [6, 6, 6, 6 ,6, 6, 3]),
+            "Rondó": (4, [5, 3, 5]),
+            "Rondel": (3, [4, 4, 5]),
+            "Haicai": (1, [3]),
+        }
+
+        n_versos_por_estrofe = [estrofe.n_versos for estrofe in self.estrofes]
+        
+        for (nome_estrutura, (n_estrofes, n_versos_por_estrofe_esperado)) in resultados.items():
+            #__import__('pdb').set_trace()
+            if self.n_estrofes != n_estrofes:
+                continue
+            if n_versos_por_estrofe == n_versos_por_estrofe_esperado:
+                return nome_estrutura
+
+        return None
 
 def contaEstrofes(poema):
     for values in poema.split("\n\n"):
@@ -106,11 +123,9 @@ def contaEstrofes(poema):
 
 def main():
     with open('poema1.txt') as f:
-        line = f.readline()
         poema = Poema(f.read())
         estrofes = poema.estrofes
-        estrofes.pop()
-        c = poema.estruturaFixa
+        c = poema.estruturaFixa2
         print(c)
         print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
         
