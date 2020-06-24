@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import urllib.request
 import re
+from urllib.parse import quote
 
 abc = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
 "s","t","u","v","w","x","z"]
@@ -16,12 +17,14 @@ def listVerbs():
                 if matched is None:
                     continue
                 verbList.add(matched.group(1))
-    return list(verbList)
+                
+    return list(sorted(verbList))
 
 def addVerbos(verbList):
     for verb in verbList:
         print(verb)
-        response = urllib.request.urlopen(f'https://conjuga-me.net/verbo-'+verb)
+        
+        response = urllib.request.urlopen(f'https://conjuga-me.net/verbo-' + quote(verb))
         
 
 def main():
