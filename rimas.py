@@ -1,15 +1,20 @@
+vogals = ["a","e","i","o","ã"]
+vogalsAcentos = ["á","é","í","õ","ô","ú"]
+
 def rima(pal1,pal2):
     conta=0
     flag = 1
-    print("Palavra1: ",pal1,"Cumprimento palavra1: ",len(pal1))
-    print("Palavra2: ",pal2,"Cumprimento palavra2: ",len(pal2))
-    for c,d in zip(reversed(pal1),reversed(pal2)):
+    rev1 = reversed(pal1)
+    rev2 = reversed(pal2)
+    for c,d in zip(rev1,rev2):
         if(c==d and flag == 1):
             conta+=1
         else:
-            flag = 0
+            break
     if(conta <= 1):
-        print("nao rima")
+        if(rev1[1] == 'u' or rev1)
+    if(conta == 2): 
+        print("cenas")
     elif(conta >= 3):
         print("rima perfeita")
 

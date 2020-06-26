@@ -1,9 +1,11 @@
 import rimas as rimas
+import re
 
 class Verso:
     def __init__(self, body: str):
         self.body = body
-
+    def __repr__(self):
+        return self.body
 
 class Estrofe:
     def __init__(self, body: str):
@@ -101,19 +103,51 @@ def contaEstrofes(poema):
         contaestrofes+=1
     return contaestrofes
 
+def contaMetrica(verso):
+    conta = 0
+    words = re.findall(r"[\w']+",verso)
+    for w in words:
+        firstLetter = w[0].lower()
+        if(firstLetter == 'y'):
+            contaMetricaManual(w)
+        with open("datasets/divisaosilabica_"+firstLetter+".csv") as f:
+            readfile = f.read()
+            wordLowered = w.lower()
+            matches = re.search(rf"(\b{wordLowered}\b), (\(.+\)), (.+)",readfile,re.MULTILINE)
+            if(matches == None):
+                conta += (contaMetricaManual(w))
+            else:
+                conta += (contaSilaba(matches.group(3)))
+    return conta           
 
+def contaSilaba(palavra):
+    conta = 1
+    for p in palavra:
+        if(p == '·'):
+            conta += 1
+    return conta     
 
+def contaMetricaManual(verso):
+    if len(verso) < 3:
+        return 1
+    elif len(verso) > 5 and len(verso) < 8:
+        return 3
+    elif len(verso) > 7:
+        return 4
+    else:
+        return 2
 
 def main():
     with open('poema1.txt') as f:
         line = f.readline()
         poema = Poema(f.read())
         estrofes = poema.estrofes
-        estrofes.pop()
         c = poema.estruturaFixa
-        print(c)
+        estrofes.pop()
         print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
-        
+        for estrofe in estrofes:
+            for verso in estrofe.versos:
+                print(contaMetrica(str(verso)))
         
        # nEstrofes = contaEstrofes(poema)
        # rimas.rima("foder","perder")
