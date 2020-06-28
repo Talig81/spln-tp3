@@ -1,5 +1,10 @@
 import rimas as rimas
 import re
+import unidecode
+
+vogals = ["a","e","i","o","u"]
+vogalsAcentos = ["à","á","é","í","õ","ô","ú","â","ê"]
+
 
 class Verso:
     def __init__(self, body: str):
@@ -40,7 +45,7 @@ class Estrofe:
         elif False:
             ...
         else:
-            return 'irregular'
+            return 'é irregular'
 
     @property
     def n_versos(self):
@@ -51,13 +56,19 @@ class Estrofe:
 
     @property
     def versos(self):
+        versos = []
         for line in self.body.split('\n'):
-            yield Verso(line)
+            versos.append(Verso(line))
+        return versos
 
 
 class Poema:
     def __init__(self, body: str):
         self.body = body
+
+    @property
+    def n_estrofes(self):
+        return len(list(self.estrofes))
 
     @property
     def estrofes(self):
@@ -96,7 +107,7 @@ class Poema:
             else:
                 return "não tem estrutura fixa"
         else:
-            return "não tem estrutura fixa"
+            return 0
 
 def contaEstrofes(poema):
     for values in poema.split("\n\n"):
@@ -107,8 +118,9 @@ def contaMetrica(verso):
     conta = 0
     words = re.findall(r"[\w']+",verso)
     for w in words:
-        firstLetter = w[0].lower()
-        if(firstLetter == 'y'):
+        firstLetter = unidecode.unidecode(w[0]).lower()
+        print("letter before: " + w[0] + " after: " + firstLetter)
+        if(firstLetter == 'y' or len(w) == 1):
             contaMetricaManual(w)
         with open("datasets/divisaosilabica_"+firstLetter+".csv") as f:
             readfile = f.read()
@@ -139,18 +151,32 @@ def contaMetricaManual(verso):
 
 def main():
     with open('poema1.txt') as f:
+        iterator = 0
         line = f.readline()
         poema = Poema(f.read())
         estrofes = poema.estrofes
         c = poema.estruturaFixa
         estrofes.pop()
-        print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
+        print("Este poema é constituido por " + str(poema.n_estrofes) + " estrofes")
+        if(poema.estruturaFixa != 0):
+            print("Como estrutura fixa este poema " + poema.estruturaFixa)
+        else:
+            print("Não tem estrutura fixa")
         for estrofe in estrofes:
+            iterator += 1
+            print("A estrofe " + str(iterator) + " tem " + str(estrofe.n_versos) + " versos: " + estrofe.n_versos_label)
             for verso in estrofe.versos:
-                print(contaMetrica(str(verso)))
+                print(rimas.aliteracao(verso))
+        
+        print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
+        print(str(rimas.rimaRica("alindo","lindo")) + " asdfasdfesd")
+        
+        #for estrofe in estrofes:
+        #    for verso in estrofe.versos:
+        #        print(contaMetrica(str(verso)))
         
        # nEstrofes = contaEstrofes(poema)
        # rimas.rima("foder","perder")
 
-
-main()
+if __name__ == '__main__':
+    main()

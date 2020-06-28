@@ -105,7 +105,6 @@ class Poema:
         n_versos_por_estrofe = [estrofe.n_versos for estrofe in self.estrofes]
         
         for (nome_estrutura, (n_estrofes, n_versos_por_estrofe_esperado)) in resultados.items():
-            #__import__('pdb').set_trace()
             if self.n_estrofes != n_estrofes:
                 continue
             if n_versos_por_estrofe == n_versos_por_estrofe_esperado:
@@ -134,4 +133,5 @@ def main():
        # rimas.rima("foder","perder")
 
 
-main()
+if __name__ == '__main__':
+    main()
