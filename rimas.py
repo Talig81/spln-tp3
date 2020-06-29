@@ -5,7 +5,7 @@ vogals = ["a", "e", "i", "o", "u"]
 vogalsAcentos = ["à", "á", "é", "í", "õ", "ô", "ú", "â", "ê"]
 
 
-def rima(pal1, pal2):
+def rimaPerfeita(pal1, pal2):
     conta = 0
     flag = 1
     rev1 = reversed(pal1)
@@ -16,11 +16,11 @@ def rima(pal1, pal2):
         else:
             break
     if(conta <= 1):
-        print("nao rima")
+        print("Rima imperfeita")
     if(conta == 2):
-        print("cenas")
+        print("Rima perfeita")
     elif(conta >= 3):
-        print("rima perfeita")
+        print("Rima perfeita")
 
 
 def rimaRica(pal1, pal2):
@@ -28,13 +28,13 @@ def rimaRica(pal1, pal2):
     pal2Decoded = unidecode.unidecode(pal2)
     word1Lowered = pal1Decoded.lower()
     word2Lowered = pal2Decoded.lower()
-    print(pal1Decoded + "   " + pal2Decoded)
+    print(pal1Decoded + "-" + pal2Decoded)
     if(pal1Decoded[0] == pal2Decoded[0]):
         with open("datasets/divisaosilabica_"+pal2Decoded[0]+".csv") as f:
             readfile = f.read()
             matches = re.search(rf"(\b{word1Lowered}\b), (\(.+\)), (.+)", readfile, re.MULTILINE)
             matches2 = re.search(rf"(\b{word2Lowered}\b), (\(.+\)), (.+)", readfile, re.MULTILINE)
-            return matchesRica(matches,matches2,pal1Decoded,pal2Decoded)
+            return matchesRica(matches,matches2,word1Lowered,word2Lowered)
     else:
         with open("datasets/divisaosilabica_"+pal1Decoded[0]+".csv") as f1:
             with open("datasets/divisaosilabica_"+pal2Decoded[0]+".csv") as f2:
@@ -42,7 +42,10 @@ def rimaRica(pal1, pal2):
                 readfile2 = f2.read()
                 matches = re.search(rf"(\b{word1Lowered}\b), (\(.+\)), (.+)", readfile1, re.MULTILINE)
                 matches2 = re.search(rf"(\b{word2Lowered}\b), (\(.+\)), (.+)", readfile2, re.MULTILINE)
-                return matchesRica(matches,matches2,pal1Decoded,pal2Decoded)
+                if(matchesRica(matches,matches2,pal1Decoded,pal2Decoded) == 0):
+                    return "Rima Rica"
+                else:
+                    return "Rima Pobre"
 
 def matchesRica(matches, matches2,pal1Decoded,pal2Decoded):
     if(matches == None and matches2 == None):

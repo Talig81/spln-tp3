@@ -13822,7 +13822,6 @@ linchar, (verbo), -
 lincharmos, (verbo), -
 linchardes, (verbo), -
 lincharem, (verbo), -
-lindo, (verbo), -
 lindava, (verbo), -
 lindei, (verbo), -
 lindas, (verbo), -
