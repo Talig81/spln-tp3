@@ -36,5 +36,3 @@ def funcaoSilabas(texto):
     esquemaMetrica = soup.find(text="Análise de estrofas (esquema métrico):").parent.nextSibling.nextSibling.li.getText()
     silabas = re.findall(r"\((\d+) sílabas\)", str(relevant_soup))
     return (esquemaMetrica,silabas)
-
-funcaoSilabas("palavra\nmacabra")

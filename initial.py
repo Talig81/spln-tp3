@@ -1,6 +1,7 @@
 import rimas as rimas
 import re
 import unidecode
+import dataminer3 as dataminer3 
 
 vogals = ["a","e","i","o","u"]
 vogalsAcentos = ["à","á","é","í","õ","ô","ú","â","ê"]
@@ -149,34 +150,37 @@ def contaMetricaManual(verso):
     else:
         return 2
 
+#def infoVersos(verso):
+
+def verificaAlit(verso):
+    if(rimas.aliteracao(verso) != 0):
+        print(rimas.aliteracao(verso))
+
 def main():
-    with open('poema1.txt') as f:
+    with open('poema2.txt') as f:
         iterator = 0
+        secondIterator = 1
         line = f.readline()
         poema = Poema(f.read())
+        treated = poema.body
+        (scheme, allSilabas) = dataminer3.funcaoSilabas(poema.body)
         estrofes = poema.estrofes
         c = poema.estruturaFixa
         estrofes.pop()
-        print("Este poema é constituido por " + str(poema.n_estrofes) + " estrofes")
+        print("Este poema é constituido por " + str(poema.n_estrofes - 1) + " estrofes")
         if(poema.estruturaFixa != 0):
             print("Como estrutura fixa este poema " + poema.estruturaFixa)
         else:
             print("Não tem estrutura fixa")
+        print("O seu esquema rimático é de: " + scheme[:-1])
         for estrofe in estrofes:
             iterator += 1
             print("A estrofe " + str(iterator) + " tem " + str(estrofe.n_versos) + " versos: " + estrofe.n_versos_label)
             for verso in estrofe.versos:
-                print(rimas.aliteracao(verso))
-        
-        print(rimas.aliteracao("Isto sofre sofrendo sofrido"))
-        print(str(rimas.rimaRica("alindo","lindo")) + " asdfasdfesd")
-        
-        #for estrofe in estrofes:
-        #    for verso in estrofe.versos:
-        #        print(contaMetrica(str(verso)))
-        
-       # nEstrofes = contaEstrofes(poema)
-       # rimas.rima("foder","perder")
+                print("O verso " + str(secondIterator) + " tem " + allSilabas[secondIterator-1] + " silabas")
+                secondIterator += 1
+        print(allSilabas)           
+                
 
 if __name__ == '__main__':
     main()
